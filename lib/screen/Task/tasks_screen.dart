@@ -13,6 +13,12 @@ class TasksScreen extends StatefulWidget {
 }
 
 class _TasksScreenState extends State<TasksScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<TasksBloc>().add(LoadTasks());
+  }
+
   void _addTask(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -38,7 +44,7 @@ class _TasksScreenState extends State<TasksScreen> {
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Center(
+              const Center(
                 child: Chip(
                   label: Text(
                     'Tasks:',

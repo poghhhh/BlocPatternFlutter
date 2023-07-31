@@ -1,13 +1,19 @@
-import 'package:bloc_pattern/models/tasks.dart';
 import 'package:bloc_pattern/screen/Task/tasks_screen.dart';
 
 import 'package:flutter/material.dart';
+import 'Database/tasks.dart';
 import 'blocs/bloc_export.dart';
 
-void main() {
-  BlocOverrides.runZoned(
-    () => runApp(const MyApp()),
-  );
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  Bloc.observer = MyBlocObserver();
+
+  // Initialize the TaskDatabase
+  final taskDatabase = TaskDatabase();
+  //await taskDatabase.deleteAllDatabases();
+  await taskDatabase.initDatabase();
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -17,17 +23,29 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => TasksBloc()
-        ..add(AddTask(
-          task: Task(title: 'Task 1 '),
-        )),
+      create: (context) => TasksBloc(),
       child: MaterialApp(
         title: 'Flutter Tasks App',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: TasksScreen(),
+        debugShowCheckedModeBanner: false,
+        home: const TasksScreen(),
       ),
     );
+  }
+}
+
+class MyBlocObserver extends BlocObserver {
+  @override
+  void onChange(BlocBase bloc, Change change) {
+    print('${bloc.runtimeType} $change');
+    super.onChange(bloc, change);
+  }
+
+  @override
+  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
+    print('${bloc.runtimeType} $error');
+    super.onError(bloc, error, stackTrace);
   }
 }

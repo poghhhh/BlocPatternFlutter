@@ -1,12 +1,13 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 part of 'tasks_bloc.dart';
 
 abstract class TasksEvent extends Equatable {
   const TasksEvent();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
+
+class LoadTasks extends TasksEvent {}
 
 class AddTask extends TasksEvent {
   final Task task;
@@ -15,7 +16,7 @@ class AddTask extends TasksEvent {
   });
 
   @override
-  List<Object> get props => [task];
+  List<Object?> get props => [task];
 }
 
 class UpdateTask extends TasksEvent {
@@ -25,7 +26,7 @@ class UpdateTask extends TasksEvent {
   });
 
   @override
-  List<Object> get props => [task];
+  List<Object?> get props => [task];
 }
 
 class DeleteTask extends TasksEvent {
@@ -35,5 +36,5 @@ class DeleteTask extends TasksEvent {
   });
 
   @override
-  List<Object> get props => [task];
+  List<Object?> get props => [task];
 }
