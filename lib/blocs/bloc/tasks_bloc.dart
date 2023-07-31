@@ -29,15 +29,22 @@ class TasksBloc extends Bloc<TasksEvent, TasksState> {
   }
 
   void _onUpdateTaskk(UpdateTask event, Emitter<TasksState> emit) async {
+    final state = this.state;
     final task = event.task;
-    final updatedTask =
-        task.copyWith(isDone: boolToInt(intToBool(task.isDone ?? 0)));
+    final int index = state.allTasks.indexOf(task);
 
-    await _taskDatabase.updateTask(updatedTask);
+    List<Task> allTasks = List.from(state.allTasks)..remove(task);
+    task.isDone == false
+        ? allTasks.insert(index, task.copyWith(isDone: true))
+        : allTasks.insert(index, task.copyWith(isDone: false));
 
-    final updatedTasks =
-        state.allTasks.map((t) => t.id == task.id ? updatedTask : t).toList();
-    emit(TasksState(allTasks: updatedTasks));
+    if (task.isDone != null) {
+      bool newIsDone = !task.isDone!;
+      allTasks[index] = task.copyWith(isDone: newIsDone);
+    }
+
+    await _taskDatabase.updateTask(allTasks[index]);
+    emit(TasksState(allTasks: allTasks));
   }
 
   void _onDeleteTask(DeleteTask event, Emitter<TasksState> emit) async {

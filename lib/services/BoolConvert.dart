@@ -3,5 +3,9 @@ bool intToBool(int value) {
 }
 
 int boolToInt(bool value) {
-  return value ? 1 : 0;
+  if (value == false) {
+    return 0;
+  } else {
+    return 1;
+  }
 }

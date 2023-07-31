@@ -3,23 +3,23 @@ import 'package:equatable/equatable.dart';
 class Task extends Equatable {
   final String id;
   final String title;
-  int? isDone;
-  int? isDelete;
+  bool? isDone;
+  bool? isDelete;
   Task({
     required this.id,
     required this.title,
     this.isDone,
     this.isDelete,
   }) {
-    isDone = isDone ?? 0;
-    isDelete = isDelete ?? 0;
+    isDone = isDone ?? false;
+    isDelete = isDelete ?? false;
   }
 
   Task copyWith({
     String? id,
     String? title,
-    int? isDone,
-    int? isDelete,
+    bool? isDone,
+    bool? isDelete,
   }) {
     return Task(
       id: id ?? this.id,
@@ -42,8 +42,8 @@ class Task extends Equatable {
     return Task(
       id: map['id'] ?? '',
       title: map['title'] ?? '',
-      isDone: map['isDone'] ?? 0,
-      isDelete: map['isDelete'] ?? 0,
+      isDone: map['isDone'] == 1 ? true : false,
+      isDelete: map['isDelete'] == 1 ? true : false,
     );
   }
 

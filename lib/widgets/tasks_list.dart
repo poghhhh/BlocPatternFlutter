@@ -22,7 +22,7 @@ class TaskList extends StatelessWidget {
           return ListTile(
             title: Text(task.title),
             trailing: Checkbox(
-              value: intToBool(task.isDone ?? 0),
+              value: task.isDone,
               onChanged: (value) {
                 context.read<TasksBloc>().add(UpdateTask(task: task));
               },
